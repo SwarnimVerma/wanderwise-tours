@@ -14,7 +14,203 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      enquiries: {
+        Row: {
+          created_at: string
+          id: string
+          message: string | null
+          name: string
+          phone: string
+          status: string | null
+          tour_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          name: string
+          phone: string
+          status?: string | null
+          tour_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string
+          status?: string | null
+          tour_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enquiries_tour_id_fkey"
+            columns: ["tour_id"]
+            isOneToOne: false
+            referencedRelation: "tours"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      operators: {
+        Row: {
+          city: string
+          contact_person: string | null
+          created_at: string
+          description: string | null
+          email: string | null
+          id: string
+          name: string
+          phone: string
+          status: string | null
+          verified: boolean | null
+        }
+        Insert: {
+          city: string
+          contact_person?: string | null
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          id?: string
+          name: string
+          phone: string
+          status?: string | null
+          verified?: boolean | null
+        }
+        Update: {
+          city?: string
+          contact_person?: string | null
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          id?: string
+          name?: string
+          phone?: string
+          status?: string | null
+          verified?: boolean | null
+        }
+        Relationships: []
+      }
+      tour_images: {
+        Row: {
+          id: string
+          image_url: string
+          tour_id: string
+        }
+        Insert: {
+          id?: string
+          image_url: string
+          tour_id: string
+        }
+        Update: {
+          id?: string
+          image_url?: string
+          tour_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tour_images_tour_id_fkey"
+            columns: ["tour_id"]
+            isOneToOne: false
+            referencedRelation: "tours"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tour_itinerary: {
+        Row: {
+          day_number: number
+          description: string | null
+          id: string
+          title: string
+          tour_id: string
+        }
+        Insert: {
+          day_number: number
+          description?: string | null
+          id?: string
+          title: string
+          tour_id: string
+        }
+        Update: {
+          day_number?: number
+          description?: string | null
+          id?: string
+          title?: string
+          tour_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tour_itinerary_tour_id_fkey"
+            columns: ["tour_id"]
+            isOneToOne: false
+            referencedRelation: "tours"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tours: {
+        Row: {
+          created_at: string
+          departure_city: string
+          description: string | null
+          destination: string
+          duration_days: number
+          end_date: string
+          id: string
+          operator_id: string | null
+          price_per_person: number
+          seats_available: number
+          seats_total: number
+          start_date: string
+          status: string | null
+          title: string
+          tour_type: string
+        }
+        Insert: {
+          created_at?: string
+          departure_city: string
+          description?: string | null
+          destination: string
+          duration_days: number
+          end_date: string
+          id?: string
+          operator_id?: string | null
+          price_per_person: number
+          seats_available: number
+          seats_total: number
+          start_date: string
+          status?: string | null
+          title: string
+          tour_type: string
+        }
+        Update: {
+          created_at?: string
+          departure_city?: string
+          description?: string | null
+          destination?: string
+          duration_days?: number
+          end_date?: string
+          id?: string
+          operator_id?: string | null
+          price_per_person?: number
+          seats_available?: number
+          seats_total?: number
+          start_date?: string
+          status?: string | null
+          title?: string
+          tour_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tours_operator_id_fkey"
+            columns: ["operator_id"]
+            isOneToOne: false
+            referencedRelation: "operators"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
