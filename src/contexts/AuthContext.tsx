@@ -77,13 +77,43 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signUp = async (email: string, password: string) => {
     const redirectUrl = `${window.location.origin}/`;
     
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: redirectUrl,
       },
     });
+
+    // If signup was successful and we have a user, create the user role
+    if (!error && data.user) {
+      try {
+        // First, try to call the database function (SECURITY DEFINER, bypasses RLS)
+        const { error: roleError } = await supabase.rpc('assign_default_user_role', {
+          _user_id: data.user.id
+        });
+
+        if (roleError) {
+          console.warn('RPC function failed, trying direct insert:', roleError);
+          // Fallback: Try direct insert (uses RLS policy if user is authenticated)
+          const { error: insertError } = await supabase
+            .from('user_roles')
+            .insert({
+              user_id: data.user.id,
+              role: 'user'
+            });
+
+          if (insertError) {
+            console.error('Error assigning user role (both methods failed):', insertError);
+            // Don't fail the signup if role assignment fails, but log it
+          }
+        }
+      } catch (err) {
+        console.error('Error in role assignment:', err);
+        // Don't fail the signup if role assignment fails
+      }
+    }
+
     return { error };
   };
 

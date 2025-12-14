@@ -131,6 +131,25 @@ export default function TourDetails() {
               </CardContent>
             </Card>
 
+            {/* Operator Info */}
+            {operator && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="font-display text-lg">Tour Operator</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="font-medium text-foreground">{operator.name}</p>
+                  <p className="text-sm text-muted-foreground">{operator.city}</p>
+                  {operator.verified && (
+                    <Badge variant="secondary" className="mt-2">
+                      <CheckCircle className="h-3 w-3 mr-1" />
+                      Verified
+                    </Badge>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
             {/* Itinerary */}
             {itinerary.length > 0 && (
               <Card>
@@ -222,9 +241,9 @@ export default function TourDetails() {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-6 lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto">
             {/* Price Card */}
-            <Card className="sticky top-24">
+            <Card>
               <CardContent className="p-6">
                 <div className="text-center mb-6">
                   <p className="text-sm text-muted-foreground mb-1">Price per person</p>
@@ -249,25 +268,6 @@ export default function TourDetails() {
                 </div>
               </CardContent>
             </Card>
-
-            {/* Operator Info */}
-            {operator && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="font-display text-lg">Tour Operator</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="font-medium text-foreground">{operator.name}</p>
-                  <p className="text-sm text-muted-foreground">{operator.city}</p>
-                  {operator.verified && (
-                    <Badge variant="secondary" className="mt-2">
-                      <CheckCircle className="h-3 w-3 mr-1" />
-                      Verified
-                    </Badge>
-                  )}
-                </CardContent>
-              </Card>
-            )}
           </div>
         </div>
       </div>

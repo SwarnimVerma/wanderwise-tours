@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, MapPin } from "lucide-react";
+import { Loader2, MapPin, LogIn, UserPlus } from "lucide-react";
 import { z } from "zod";
 
 const authSchema = z.object({
@@ -60,7 +60,12 @@ export default function Auth() {
       });
     } else {
       toast({ title: "Welcome back!" });
-      navigate("/admin");
+      // Wait a bit for auth state to update, then redirect
+      setTimeout(() => {
+        // Check admin status after auth state updates
+        // For now, redirect to home - admins can access /admin from navbar
+        navigate("/");
+      }, 500);
     }
   };
 
@@ -89,21 +94,26 @@ export default function Auth() {
     } else {
       toast({
         title: "Account created!",
-        description: "Please check your email to confirm your account.",
+        description: "Please check your email to confirm your account. You can sign in once confirmed.",
       });
+      // Reset form
+      setEmail("");
+      setPassword("");
     }
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <MapPin className="h-8 w-8 text-primary" />
             <span className="font-display text-2xl font-semibold">IND Group Tours</span>
           </div>
-          <CardTitle className="font-display text-xl">Admin Access</CardTitle>
-          <CardDescription>Sign in to manage tours and operators</CardDescription>
+          <CardTitle className="font-display text-xl">Sign In or Create Account</CardTitle>
+          <CardDescription>
+            Access your account to book tours, manage bookings, or access admin features
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="signin" className="w-full">
@@ -121,7 +131,7 @@ export default function Auth() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="admin@example.com"
+                    placeholder="your@email.com"
                     required
                   />
                   {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
@@ -139,7 +149,11 @@ export default function Auth() {
                   {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
-                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {loading ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <LogIn className="mr-2 h-4 w-4" />
+                  )}
                   Sign In
                 </Button>
               </form>
@@ -154,7 +168,7 @@ export default function Auth() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="admin@example.com"
+                    placeholder="your@email.com"
                     required
                   />
                   {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
@@ -172,7 +186,11 @@ export default function Auth() {
                   {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
-                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {loading ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <UserPlus className="mr-2 h-4 w-4" />
+                  )}
                   Create Account
                 </Button>
               </form>
